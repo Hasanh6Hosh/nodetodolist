@@ -1,10 +1,10 @@
 const express = require('express');
 require('dotenv').config();
+const db = require('./config/db_config');
 const port = process.env.PORT;
 const api = process.env.HOST;
 const app = express();
 app.use(express.static(__dirname));
-const db = require('./config/db_config');
 app.use(express.json());
 
 app.get('/',(req,res)=>{res.sendFile(__dirname+'/public/index.html')})
