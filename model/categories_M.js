@@ -24,9 +24,16 @@ async function remove(catId,userId){
     return result.affectedRows;
 }
 
+async function update(catId,userId,newName){
+    let sql = `UPDATE categories SET name = ? WHERE id = ? AND user_id = ?`;
+    let [result] = await db.query(sql,[newName,catId,userId]);    
+    return result.affectedRows;
+}
+
 module.exports ={
     getAll,
     add,
     getOne,
-    remove
+    remove,
+    update
 }

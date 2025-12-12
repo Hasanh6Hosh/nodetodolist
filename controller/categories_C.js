@@ -1,4 +1,4 @@
-const {getAll,add,getOne,remove} = require('../model/categories_M.js');
+const {getAll,add,getOne,remove,update} = require('../model/categories_M.js');
 
 async function getAllCategories(req,res) {
     try{
@@ -56,9 +56,25 @@ async function deleteCategory(req,res) {
     }
 }
 
+async function updateCategory(req,res) {
+    try{
+        let catId = req.id;
+        let userId = req.user.id;
+        let newName = req.body.name;
+        let affectedRows = await update(catId,userId,newName);
+        if(!affectedRows){
+            return res.status(400).json({message:`Category ${req.id} not found!`})
+        }
+        res.status(200).json({message:"updated!"});
+    }catch(err){
+        res.status(500).json({message:"Server error"})
+    }
+}
+
 module.exports={
     getAllCategories,
     addCategory,
     getCategory,
-    deleteCategory
+    deleteCategory,
+    updateCategory
 }

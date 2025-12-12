@@ -1,4 +1,4 @@
-function valuesToAdd(req,res,next){
+function validValues(req,res,next){
     let name = req.body.name;
     if(!name){
         return res.status(400).json({message:"חסרים נתונים"});
@@ -16,6 +16,6 @@ function isValidId(req,res,next){
 }
 
 module.exports = {
-    valuesToAdd,
+    validValues,
     isValidId
 }
