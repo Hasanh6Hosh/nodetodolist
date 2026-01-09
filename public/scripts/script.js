@@ -1,7 +1,8 @@
 let greating = "Hello ";
 greating += localStorage.getItem('name');
 document.getElementById('greating').innerHTML = greating;
-allCategories = [];
+let allCategories = [];
+let allTasks = [];
 
 async function getTasks() {
     try {
@@ -15,6 +16,7 @@ async function getTasks() {
             alert(data.message);
             return;
         }
+        allTasks = data;
         createTable(data);
     } catch (err) {
         alert(err)
@@ -33,9 +35,10 @@ async function getCategories() {
             alert(data.message);
             return;
         }
-        for(let c of data){
+        for (let c of data) {
             allCategories[c.id] = c;
         }
+        createSelect(allCategories);
     } catch (err) {
         alert(err)
     }
@@ -47,7 +50,7 @@ function createTable(data) {
         if (obj) {
             let isChecked = obj.is_done ? "checked" : "";
             let rowClass = obj.is_done ? "class='rowClass'" : "";
-            let catName = allCategories[obj.category_id]?allCategories[obj.category_id].name:'--';
+            let catName = allCategories[obj.category_id] ? allCategories[obj.category_id].name : '--';
             txt += `<tr ${rowClass}>`;
             txt += `<td><input type="checkbox" ${isChecked} onchange="taskDone(${obj.id},this)"></td>`;
             txt += `<td>${obj.text}</td>`;
@@ -58,6 +61,26 @@ function createTable(data) {
         }
     }
     document.getElementById('myTable').innerHTML = txt;
+}
+
+function createSelect(data) {
+    let txt = `<option value="0">All</option>`;
+    for (obj of data) {
+        if (obj) {
+            txt += `<option value="${obj.id}">${obj.name}</option>`;
+        }
+    }
+    document.getElementById('mySelect').innerHTML = txt;
+}
+
+function sortTable() {
+    let val = document.getElementById('mySelect').value;
+    if (val == 0) {
+        createTable(allTasks);
+    } else {
+        let sorted = allTasks.filter(task => task.category_id == val);
+        createTable(sorted);
+    }
 }
 
 async function taskDone(id, elm) {
@@ -72,7 +95,7 @@ async function taskDone(id, elm) {
     } catch (err) {
         alert(err)
     }
-} 
+}
 
 getCategories();
 getTasks();
