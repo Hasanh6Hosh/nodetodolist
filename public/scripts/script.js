@@ -97,5 +97,20 @@ async function taskDone(id, elm) {
     }
 }
 
+async function deleteTask(id) {
+    try {
+        let response = await fetch(`/tasks/${id}`,{
+            method:'DELETE'
+        })
+        let data = await response.json();
+        if(!response.ok){
+            alert(data.message);
+        }
+        getTasks();
+    } catch (err) {
+        alert(err)
+    }
+}
+
 getCategories();
 getTasks();
