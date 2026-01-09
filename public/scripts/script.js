@@ -97,6 +97,27 @@ async function taskDone(id, elm) {
     }
 }
 
+async function addTask() {
+    try {
+        let text = document.getElementById('text').value;
+        console.log(text);
+        
+        let catId = document.getElementById('mySelect').value;
+        if(catId == 0){
+            catId = null;
+        }
+        let response = await fetch('/tasks',{
+            method:'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({text,catId})
+        })
+        getTasks();
+        document.getElementById('text').value = "";
+    } catch (err) {
+        alert(err)
+    }
+}
+
 async function deleteTask(id) {
     try {
         let response = await fetch(`/tasks/${id}`,{
