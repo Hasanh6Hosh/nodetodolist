@@ -30,6 +30,7 @@ async function register(req,res) {
 }
 
 async function login(req,res,next) {
+   
     try{
         let user = await getByUserName(req.body.userName);
         if(!user){
@@ -48,6 +49,7 @@ async function login(req,res,next) {
 }
 
 function createJwt(req,res) {
+     console.log('CREATE JWT FUNCTION');
     try{
         let user = req.user;
         let token = jwt.sign(

@@ -19,15 +19,43 @@ async function getOne(catId,userId){
 }
 
 async function remove(catId,userId){
+    try{
     let sql = `DELETE FROM categories WHERE id = ? AND user_id = ?`;
     let [result] = await db.query(sql,[catId,userId]);    
     return result.affectedRows;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
 }
 
 async function update(catId,userId,newName){
+    try{
     let sql = `UPDATE categories SET name = ? WHERE id = ? AND user_id = ?`;
     let [result] = await db.query(sql,[newName,catId,userId]);    
     return result.affectedRows;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
+async function removeWithTasks(catId, userId){
+    try{
+    await db.query(
+        'DELETE FROM tasks WHERE category_id = ? AND user_id = ?',
+        [catId, userId]
+    );
+
+    let [result] = await db.query(
+        'DELETE FROM categories WHERE id = ? AND user_id = ?',
+        [catId, userId]
+    );
+
+    return result.affectedRows;
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
 }
 
 module.exports ={
@@ -35,5 +63,6 @@ module.exports ={
     add,
     getOne,
     remove,
-    update
+    update,
+    removeWithTasks,
 }

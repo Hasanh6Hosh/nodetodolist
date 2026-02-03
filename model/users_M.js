@@ -39,7 +39,7 @@ async function getByEmail(email){
     return result[0];
 }
 
-async function addUser({name,email,userName,pass}){
+async function addUsers({name,email,userName,pass}){
     let sql = `INSERT INTO users (name,email,userName,pass) VALUES (?,?,?,?)`;
     let [result] = await db.query(sql,[name,email,userName,pass]); 
     return result.insertId;
@@ -52,5 +52,5 @@ module.exports ={
     update,
     getByUserName,
     getByEmail,
-    addUser
+    addUsers,
 }

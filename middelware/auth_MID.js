@@ -29,18 +29,23 @@ async function encrypPass(req,res,next){
     }
 }
 
-function isLoggedIn(req,res,next){
-    let token = req.cookies.jwt;    
-    if(!token){
-        return res.status(401).json({message:"נא להתחבר למערכת"});
+function isLoggedIn(req, res, next) {
+    const token = req.cookies ? req.cookies.jwt : null;
+    
+
+    if (!token) {
+        
+        return res.status(401).json({ message: "Please login" });
     }
-    try{
-        let payload = jwt.verify(token,process.env.SECRET_KEY);    
-        req.user = payload;    
+
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        req.user = decoded;
+        
         next();
-    }catch(err){
-        console.error(err);
-        res.status(500).json({message:"Server error"});
+    } catch (err) {
+       
+        return res.status(401).json({ message: "Invalid session" });
     }
 }
 
@@ -48,5 +53,5 @@ module.exports = {
     valuesToAdd,
     encrypPass,
     valuesToLogin,
-    isLoggedIn
+    isLoggedIn,
 }

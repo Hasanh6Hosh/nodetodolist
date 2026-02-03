@@ -1,8 +1,10 @@
 function valuesToAdd(req,res,next){
     let text = req.body.text;
+    
     if(!text){
         return res.status(400).json({message:"חסרים נתונים"});
     }
+    
     next();
 }
 
